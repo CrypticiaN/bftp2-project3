@@ -49,13 +49,15 @@ class IntegrationTests {
                 .andExpect(jsonPath("$[0].synopsis", equalTo("A wealthy entrepreneur secretly creates a theme park featuring living dinosaurs drawn from prehistoric DNA.")))
                 .andExpect(jsonPath("$[0].genero", equalTo("Comedia")))
                 .andExpect(jsonPath("$[0].valoracion", equalTo(4)))
+                .andExpect(jsonPath("$[0].alquilado", equalTo(false)))
                 .andExpect(jsonPath("$[1].title", equalTo("Ratatouille")))
                 .andExpect(jsonPath("$[1].coverImage", equalTo("https://www.themoviedb.org/t/p/w600_and_h900_bestv2/npHNjldbeTHdKKw28bJKs7lzqzj.jpg")))
                 .andExpect(jsonPath("$[1].director", equalTo("Brad Bird")))
                 .andExpect(jsonPath("$[1].year", equalTo(2007)))
                 .andExpect(jsonPath("$[1].synopsis", equalTo("Remy, a resident of Paris, appreciates good food and has quite a sophisticated palate. He would love to become a chef so he can create and enjoy culinary masterpieces to his heart's delight. The only problem is, Remy is a rat.")))
                 .andExpect(jsonPath("$[1].genero", equalTo("Familiar")))
-                .andExpect(jsonPath("$[1].valoracion", equalTo(2)));
+                .andExpect(jsonPath("$[1].valoracion", equalTo(2)))
+                .andExpect(jsonPath("$[1].alquilado", equalTo (false)));
 
     }
 
@@ -67,14 +69,14 @@ class IntegrationTests {
                         1993,
                         "A wealthy entrepreneur secretly creates a theme park featuring living dinosaurs drawn from prehistoric DNA.",
                         "Comedia",
-                        4),
+                        4, false),
                 new Movie("Ratatouille",
                         "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/npHNjldbeTHdKKw28bJKs7lzqzj.jpg",
                         "Brad Bird",
                         2007,
                         "Remy, a resident of Paris, appreciates good food and has quite a sophisticated palate. He would love to become a chef so he can create and enjoy culinary masterpieces to his heart's delight. The only problem is, Remy is a rat.",
                         "Familiar",
-                        2)
+                        2, false)
         );
 
         movieRepository.saveAll(movies);

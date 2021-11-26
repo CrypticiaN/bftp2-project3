@@ -17,10 +17,11 @@ public class Movie {
     private String synopsis;
     private String genero;
     private int valoracion;
+    private boolean alquilado;
 
     public Movie() { }
 
-    public Movie(String title, String coverImage, String director, int year, String synopsis, String genero, int valoracion) {
+    public Movie(String title, String coverImage, String director, int year, String synopsis, String genero, int valoracion, boolean alquilado) {
         this.title = title;
         this.coverImage = coverImage;
         this.director = director;
@@ -28,6 +29,7 @@ public class Movie {
         this.synopsis = synopsis;
         this.genero = genero;
         this.valoracion = valoracion;
+        this.alquilado = false;
     }
 
     public Long getId() {
@@ -72,5 +74,13 @@ public class Movie {
 
     public void setValoracion(int valoracion) {
         this.valoracion = valoracion;
+    }
+
+    public boolean isAlquilado() {
+        return alquilado;
+    }
+
+    public void setAlquilado(boolean alquilado) {
+        this.alquilado = alquilado;
     }
 }
