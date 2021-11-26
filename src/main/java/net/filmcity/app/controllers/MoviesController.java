@@ -25,6 +25,7 @@ public class MoviesController {
 
     @PostMapping("/movies")
     public Movie addMovie(@RequestBody Movie movie) {
+
         return movieRepository.save(movie);
     }
 
@@ -33,6 +34,5 @@ public class MoviesController {
         movieRepository.findById(movie.getId()).orElseThrow(MovieNotFoundException::new);
         return movieRepository.save(movie);
     }
-
 
 }
