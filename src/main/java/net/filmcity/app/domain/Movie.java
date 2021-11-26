@@ -14,15 +14,17 @@ public class Movie {
     private String director;
     private int year;
     private String synopsis;
+    private String genero;
 
     public Movie() { }
 
-    public Movie(String title, String coverImage, String director, int year, String synopsis) {
+    public Movie(String title, String coverImage, String director, int year, String synopsis, String genero) {
         this.title = title;
         this.coverImage = coverImage;
         this.director = director;
         this.year = year;
         this.synopsis = synopsis;
+        this.genero = genero;
     }
 
     public Long getId() {
@@ -52,4 +54,14 @@ public class Movie {
     public String getSynopsis() {
         return synopsis;
     }
+
+    public String getGenero() {
+        return genero;
+    }
+
+    public void setGenero(String genero) {
+        this.genero = genero;
+    }
+
+
 }
