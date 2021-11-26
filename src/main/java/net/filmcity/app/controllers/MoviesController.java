@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.util.*;
 
 @RestController
 public class MoviesController {
@@ -33,6 +33,13 @@ public class MoviesController {
     public Movie updateMovieById(@RequestBody Movie movie) {
         movieRepository.findById(movie.getId()).orElseThrow(MovieNotFoundException::new);
         return movieRepository.save(movie);
+    }
+
+    @DeleteMapping("/movies/{id}")
+    public Movie deleteMovieById(@PathVariable Long id) {
+        Movie movie = movieRepository.findById(id).orElseThrow(MovieNotFoundException::new);
+        movieRepository.deleteById(id);
+        return movie;
     }
 
 }
