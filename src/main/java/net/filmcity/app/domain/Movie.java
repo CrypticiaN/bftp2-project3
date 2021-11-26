@@ -70,6 +70,13 @@ public class Movie {
         return valoracion;
     }
 
+<<<<<<< HEAD
+=======
+    public int getValoracion() {
+        return valoracion;
+    }
+
+>>>>>>> 4515d79cbb614061207199d895b8b0263f8569c2
     public void setValoracion(int valoracion) {
         this.valoracion = valoracion;
     }
