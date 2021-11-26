@@ -42,7 +42,7 @@ public class SampleDataLoader {
                             "https://images-na.ssl-images-amazon.com/images/I/71eQtET-kmL._RI_.jpg",
                             "Mark Waters",
                             2004,
-                            "Lindsay Lohan stars as Cady Heron, a 16 year old homeschooled girl who not only makes the mistake of falling for Aaron Samuels (Jonathan Bennett), the ex-boyfriend of queenbee Regina George (Rachel McAdams), but also unintentionally joins The Plastics, led by Regina herself."
+                            "Lindsay Lohan stars as Cady Heron, a 16 year old homeschooled girl who not only makes the mistake of falling for Aaron Samuels, the ex-boyfriend of queenbee Regina George, but also unintentionally joins The Plastics, led by Regina herself."
                             ),
                     new Movie("Lady Bird",
                             "https://pics.filmaffinity.com/Lady_Bird-546261513-large.jpg",
