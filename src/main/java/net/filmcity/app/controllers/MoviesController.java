@@ -3,10 +3,7 @@ package net.filmcity.app.controllers;
 import net.filmcity.app.domain.Movie;
 import net.filmcity.app.repositories.MovieRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-<<<<<<< HEAD
-=======
 
->>>>>>> fcba307466049620faddf006014299ad9e3d5e84
 //import org.springframework.web.bind.annotation.GetMapping;
 //import org.springframework.web.bind.annotation.PostMapping;
 //import org.springframework.web.bind.annotation.RequestBody;
@@ -32,13 +29,7 @@ public class MoviesController {
 
     @PostMapping("/movies")
     public Movie addMovie(@RequestBody Movie movie) {
-<<<<<<< HEAD
-        movieRepository.save(movie);
-        return movie;
-    }
-=======
+
         return movieRepository.save(movie);
     }
-
->>>>>>> fcba307466049620faddf006014299ad9e3d5e84
 }
