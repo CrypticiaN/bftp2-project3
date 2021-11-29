@@ -8,14 +8,16 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
 
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.hasSize;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -60,6 +62,91 @@ class IntegrationTests {
                 .andExpect(jsonPath("$[1].valoracion", equalTo(2)))
                 .andExpect(jsonPath("$[1].alquilado", equalTo (false)));
 
+    }
+
+    @Test
+    void allowsToCreateANewMovie() throws Exception {
+        mockMvc.perform(post("/movies")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"title\": \"Laura\", \"coverImage\": \"PHP\", \"director\": \"Laura\", \"year\": \"PHP\", \"synopsis\": \"Laura\", \"genero\": \"PHP\"}")
+        ).andExpect(status().isOk());
+
+        List<Movie> movies = movieRepository.findAll();
+        assertThat(movies, contains(allOf(
+                hasProperty("title", is("Laura")),
+                hasProperty("coverImage", is("PHP")),
+                hasProperty("director", is("PHP")),
+                hasProperty("year", is("PHP")),
+                hasProperty("synopsis", is("PHP")),
+                hasProperty("genero", is("PHP")),
+
+        )));
+    }
+
+    @Test
+    void allowsToFindMovieById() throws Exception {
+
+        Movie movie = movieRepository.save(new Movie("Marta", "Kotlin"));
+
+        mockMvc.perform(get("/movies/" + movie.getId()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.name", equalTo("Marta")))
+                .andExpect(jsonPath("$.favouriteLanguage", equalTo("Kotlin")));
+    }
+
+    @Test
+    void returnsAnErrorIfTryingToGetAMovieThatDoesNotExist() throws Exception {
+        mockMvc.perform(get("/movies/1"))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    void allowsToDeleteAMovieById() throws Exception {
+        Movie movie = movieRepository.save(new Movie("Marta", "Kotlin"));
+
+        mockMvc.perform(delete("/movies/"+ movie.getId()))
+                .andExpect(status().isOk());
+
+
+        List<Movie> movies = movieRepository.findAll();
+        assertThat(movies, not(contains(allOf(
+                hasProperty("name", is("Marta")),
+                hasProperty("favouriteLanguage", is("Kotlin"))
+        ))));
+
+    }
+
+    @Test
+    void returnsAnErrorIfTryingToDeleteAMovieThatDoesNotExist() throws Exception {
+        mockMvc.perform(delete("/movies/1"))
+                .andExpect(status().isNotFound());
+    }
+
+
+    @Test
+    void allowsToModifyAMovie() throws Exception {
+        Movie movie = movieRepository.save(new Movie("Yeraldin", "Java"));
+
+        mockMvc.perform(put("/movies")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"id\": \"" + movie.getId() + "\", \"name\": \"Yeraldin\", \"favouriteLanguage\": \"Ruby\" }")
+        ).andExpect(status().isOk());
+
+        List<Movie> movies = movieRepository.findAll();
+
+        assertThat(movies, hasSize(1));
+        assertThat(movies.get(0).getTitle(), equalTo("Yeraldin"));
+        assertThat(movies.get(0).getCoverImage(), equalTo("Ruby"));
+    }
+
+    @Test
+    void returnsAnErrorWhenTryingToModifyAMovieThatDoesNotExist() throws Exception {
+        addSampleMovies();
+
+        mockMvc.perform(put("/movies")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"id\": \"" + -1 + "\", \"name\": \"Pepita\", \"favouriteLanguage\": \"C++\" }")
+        ).andExpect(status().isNotFound());
     }
 
     private void addSampleMovies() {
