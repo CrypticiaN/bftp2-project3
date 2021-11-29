@@ -3,6 +3,7 @@ package net.filmcity.app;
 import net.filmcity.app.domain.Movie;
 import net.filmcity.app.repositories.MovieRepository;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -29,8 +30,8 @@ class IntegrationTests {
     MovieRepository movieRepository;
 
 
-    @AfterEach
-    void tearDown() {
+    @BeforeEach
+    void setUp() {
         movieRepository.deleteAll();
     }
 
@@ -43,7 +44,7 @@ class IntegrationTests {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[*]", hasSize(2)))
                 .andExpect(jsonPath("$[0].title", equalTo("Jurassic Park")))
-                .andExpect(jsonPath("$[0].coverImage", equalTo("https://www.themoviedb                  .org/t/p/w600_and_h900_bestv2/oU7Oq2kFAAlGqbU4VoAE36g4hoI.jpg")))
+                .andExpect(jsonPath("$[0].coverImage", equalTo("https://www.themoviedb.org/t/p/w600_and_h900_bestv2/oU7Oq2kFAAlGqbU4VoAE36g4hoI.jpg")))
                 .andExpect(jsonPath("$[0].director", equalTo("Steven Spielberg")))
                 .andExpect(jsonPath("$[0].year", equalTo(1993)))
                 .andExpect(jsonPath("$[0].synopsis", equalTo("A wealthy entrepreneur secretly creates a theme park featuring living dinosaurs drawn from prehistoric DNA.")))
