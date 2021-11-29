@@ -5,6 +5,7 @@ import javax.persistence.*;
 @Entity
 @Table(name = "movies")
 public class Movie {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -29,7 +30,7 @@ public class Movie {
         this.synopsis = synopsis;
         this.genero = genero;
         this.valoracion = valoracion;
-        this.alquilado = false;
+        this.alquilado = alquilado;
     }
 
     public Long getId() {
@@ -77,7 +78,7 @@ public class Movie {
     }
 
     public boolean isAlquilado() {
-        return alquilado;
+        return false;
     }
 
     public void setAlquilado(boolean alquilado) {

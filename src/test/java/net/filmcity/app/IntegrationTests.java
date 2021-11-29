@@ -68,17 +68,19 @@ class IntegrationTests {
     void allowsToCreateANewMovie() throws Exception {
         mockMvc.perform(post("/movies")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"title\": \"Laura\", \"coverImage\": \"PHP\", \"director\": \"Laura\", \"year\": \"PHP\", \"synopsis\": \"Laura\", \"genero\": \"PHP\"}")
+                .content("{\"title\": \"Titanic\", \"coverImage\": \"PHP\", \"director\": \"Laura\", \"year\": \"2005\", \"synopsis\": \"PHP\", \"genero\": \"PHP\", \"valoracion\": \"4\", \"alquilado\": \"false\"}")
         ).andExpect(status().isOk());
 
         List<Movie> movies = movieRepository.findAll();
         assertThat(movies, contains(allOf(
-                hasProperty("title", is("Laura")),
+                hasProperty("title", is("Titanic")),
                 hasProperty("coverImage", is("PHP")),
-                hasProperty("director", is("PHP")),
-                hasProperty("year", is("PHP")),
+                hasProperty("director", is("Laura")),
+                hasProperty("year", is(2005)),
                 hasProperty("synopsis", is("PHP")),
                 hasProperty("genero", is("PHP")),
+                hasProperty("valoracion", is(4)),
+                hasProperty("alquilado", is(false))
 
         )));
     }
@@ -86,12 +88,45 @@ class IntegrationTests {
     @Test
     void allowsToFindMovieById() throws Exception {
 
-        Movie movie = movieRepository.save(new Movie("Marta", "Kotlin"));
+        Movie movie = movieRepository.save(new Movie("Jurassic Park",
+                "\"https://www.themoviedb.org/t/p/w600_and_h900_bestv2/oU7Oq2kFAAlGqbU4VoAE36g4hoI.jpg\"",
+                "\"Steven Spielberg\"",
+                1993,
+                "\"A wealthy entrepreneur secretly creates a theme park featuring living dinosaurs drawn from prehistoric DNA.\"",
+                "Comedia",
+                4,
+                false));
+        Movie movie2 = movieRepository.save(new Movie("Ratatouille",
+                "\"https://www.themoviedb.org/t/p/w600_and_h900_bestv2/npHNjldbeTHdKKw28bJKs7lzqzj.jpg\"",
+                "\"Brad Bird\"",
+                2007,
+                "\"Remy, a resident of Paris, appreciates good food and has quite " +
+                        "a sophisticated palate. He would love to become a chef so he can create and enjoy culinary masterpieces to his heart's delight. The only problem is, Remy is a rat.\"",
+                "\"Familiar\"",
+                2,
+                false));
 
         mockMvc.perform(get("/movies/" + movie.getId()))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name", equalTo("Marta")))
-                .andExpect(jsonPath("$.favouriteLanguage", equalTo("Kotlin")));
+                .andExpect(jsonPath("$.title", equalTo("Jurassic Park")))
+                .andExpect(jsonPath("$.coverImage", equalTo("https://www.themoviedb.org/t/p/w600_and_h900_bestv2/oU7Oq2kFAAlGqbU4VoAE36g4hoI.jpg")))
+                .andExpect(jsonPath("$.director", equalTo("Steven Spilberg")))
+                .andExpect(jsonPath("$.year", equalTo(1993)))
+                .andExpect(jsonPath("$.synopsis", equalTo("A wealthy entrepreneur secretly creates a theme park featuring living dinosaurs drawn from prehistoric DNA.")))
+                .andExpect(jsonPath("$.genero", equalTo("Comedia")))
+                .andExpect(jsonPath("$.valoracion", equalTo(4)))
+                .andExpect(jsonPath("$.alquilado", equalTo(false)));
+
+        mockMvc.perform(get("/movies/" + movie2.getId()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.title", equalTo("Ratatouille")))
+                .andExpect(jsonPath("$.coverImage", equalTo("https://www.themoviedb.org/t/p/w600_and_h900_bestv2/npHNjldbeTHdKKw28bJKs7lzqzj.jpg")))
+                .andExpect(jsonPath("$.director", equalTo("Brad Bird")))
+                .andExpect(jsonPath("$.year", equalTo(2007)))
+                .andExpect(jsonPath("$.synopsis", equalTo("Remy, a resident of Paris, appreciates good food and has quite a sophisticated palate. He would love to become a chef so he can create and enjoy culinary masterpieces to his heart's delight. The only problem is, Remy is a rat.")))
+                .andExpect(jsonPath("$.genero", equalTo("Familiar")))
+                .andExpect(jsonPath("$.valoracion", equalTo(2)))
+                .andExpect(jsonPath("$.alquilado", equalTo(false)));
     }
 
     @Test
@@ -102,16 +137,37 @@ class IntegrationTests {
 
     @Test
     void allowsToDeleteAMovieById() throws Exception {
-        Movie movie = movieRepository.save(new Movie("Marta", "Kotlin"));
+        Movie movie = movieRepository.save(new Movie("Jurassic Park", "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/oU7Oq2kFAAlGqbU4VoAE36g4hoI.jpg",
+                "Steven Spilberg", 1993,
+                "A wealthy entrepreneur secretly creates a theme park featuring living dinosaurs drawn from prehistoric DNA.",
+                "Comedia",
+                4,
+                false));
+
+        Movie movie2 = movieRepository.save(new Movie("Ratatouille",
+                "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/npHNjldbeTHdKKw28bJKs7lzqzj.jpg",
+                "Brad Bird", 2007,
+                "Remy, a resident of Paris, appreciates good food and has quite a sophisticated palate. He would love to become a chef so he can create and enjoy culinary masterpieces to his heart's delight. The only problem is, Remy is a rat.",
+                "Familiar",
+                2,
+                false));
 
         mockMvc.perform(delete("/movies/"+ movie.getId()))
+                .andExpect(status().isOk());
+
+        mockMvc.perform(delete("/movies/"+ movie2.getId()))
                 .andExpect(status().isOk());
 
 
         List<Movie> movies = movieRepository.findAll();
         assertThat(movies, not(contains(allOf(
-                hasProperty("name", is("Marta")),
-                hasProperty("favouriteLanguage", is("Kotlin"))
+                hasProperty("title", is("Jurassic Park")),
+                hasProperty("coverImage", is("https://www.themoviedb.org/t/p/w600_and_h900_bestv2/oU7Oq2kFAAlGqbU4VoAE36g4hoI.jpg")),
+                hasProperty("director", is("Steven Spelberg")),
+                hasProperty("synopsis", is("A wealthy entrepreneur secretly creates a theme park featuring living dinosaurs drawn from prehistoric DNA")),
+                hasProperty("genero", is("Comedia")),
+                hasProperty("valoracion", is(2)),
+                hasProperty("alquilado", is(false))
         ))));
 
     }
@@ -125,18 +181,58 @@ class IntegrationTests {
 
     @Test
     void allowsToModifyAMovie() throws Exception {
-        Movie movie = movieRepository.save(new Movie("Yeraldin", "Java"));
+        Movie movie = movieRepository.save(new Movie("Bella y Bestia",
+                "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/oU7Oq2kFAAlGqbU4VoAE36g4hoI.jpg",
+                "Steven",
+                1999,
+                "A wealthy entrepreneur secretly creates a theme park featuring living dinosaurs drawn from prehistoric DNA.",
+                "Drama",
+                3,
+                false));
 
         mockMvc.perform(put("/movies")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"id\": \"" + movie.getId() + "\", \"name\": \"Yeraldin\", \"favouriteLanguage\": \"Ruby\" }")
+                .content("{\"id\": \"" + movie.getId() + "\", \"title\": \"Bella y bestia\"," +
+                        " \"coverImage\": \"\"https://www.themoviedb.org/t/p/w600_and_h900_bestv2/oU7Oq2kFAAlGqbU4VoAE36g4hoI.jpg\"\"" +
+                        "\"director\": \"\"Steven\"," +
+                        "\"year\": 1999," +
+                        "\"synopsis\": Enamoramiento entre un animal y una persona," +
+                        "\"genero\": \"Drama\"," +
+                        "\"valoracion\": 3," +
+                        "\"alquilado\": false }")
+        ).andExpect(status().isOk());
+
+        Movie movie2 = movieRepository.save(new Movie("Ratatouille",
+                "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/oU7Oq2kFAAlGqbU4VoAE36g4hoI.jpg",
+                "Brad Bird",
+                2007,
+                "A wealthy entrepreneur secretly creates a theme park featuring living dinosaurs drawn from prehistoric DNA.",
+                "Familiar",
+                2,
+                false));
+
+        mockMvc.perform(put("/movies")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"id\": \"" + movie2.getId() + "\", \"title\": \"Ratatouille\"," +
+                        " \"coverImage\": \"\"https://www.themoviedb.org/t/p/w600_and_h900_bestv2/oU7Oq2kFAAlGqbU4VoAE36g4hoI.jpg\"\"" +
+                        "\"director\": \"\"Brad Bird\"," +
+                        "\"year\": 2007," +
+                        "\"valoracion\": 2," +
+                        "\"alquilado\": false }")
         ).andExpect(status().isOk());
 
         List<Movie> movies = movieRepository.findAll();
 
         assertThat(movies, hasSize(1));
-        assertThat(movies.get(0).getTitle(), equalTo("Yeraldin"));
-        assertThat(movies.get(0).getCoverImage(), equalTo("Ruby"));
+        assertThat(movies.get(0).getTitle(), equalTo("Jurassic Park"));
+        assertThat(movies.get(0).getCoverImage(), equalTo("https://www.themoviedb.org/t/p/w600_and_h900_bestv2/oU7Oq2kFAAlGqbU4VoAE36g4hoI.jpg"));
+        assertThat(movies.get(0).getDirector(), equalTo("Steven Spilberg"));
+        assertThat(movies.get(0).getYear(), equalTo(1993));
+        assertThat(movies.get(0).getSynopsis(), equalTo("A wealthy entrepreneur secretly creates a theme park featuring living dinosaurs drawn from prehistoric DNA."));
+        assertThat(movies.get(0).getGenero(), equalTo("Comedia"));
+        assertThat(movies.get(0).getValoracion(), equalTo(4));
+        assertThat(movies.get(0).isAlquilado(), equalTo(false));
+
     }
 
     @Test
