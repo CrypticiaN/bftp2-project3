@@ -20,3 +20,7 @@ jobs:
           distribution: 'adopt'
       - name: Build with Gradle
         run: ./gradlew build
+      - name: generate Coverage Report
+        run: ./gradlew jacocoTestReport
+      - name: publish coverage report
+        run: bash <(curl -s https://codecov.io/bash)
