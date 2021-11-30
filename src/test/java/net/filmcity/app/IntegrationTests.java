@@ -139,9 +139,8 @@ class IntegrationTests {
 
 
     @Test
-    @Disabled
     void allowsToModifyAMovie() throws Exception {
-        Movie movie = movieRepository.save(new Movie("Jurasic Park",
+        Movie movie = movieRepository.save(new Movie("Jurassic Park",
                 "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/oU7Oq2kFAAlGqbU4VoAE36g4hoI.jpg",
                 "Steven Spilberg",
                 1999,
@@ -152,60 +151,29 @@ class IntegrationTests {
 
         mockMvc.perform(put("/movies")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"id\": \"" + movie.getId() + "\", \"title\": \"Jurassic Park2\"," +
-                        " \"coverImage\": \"\"https://www.themoviedb.org/t/p/w600_and_h900_bestv2/oU7Oq2kFAAlGqbU4VoAE36g4hoI.jpg\"\"" +
-                        "\"director\": \"\"Steven\"," +
+                .content("{\"id\": \"" + movie.getId() + "\", \"title\": \"Jurassic Park 2\"," +
+                        " \"coverImage\": \"https://www.themoviedb.org/t/p/w600_and_h900_bestv2/oU7Oq2kFAAlGqbU4VoAE36g4hoI.jpg\"," +
+                        "\"director\": \"Steven\"," +
                         "\"year\": 1999," +
-                        "\"synopsis\": Enamoramiento entre un animal y una persona," +
+                        "\"synopsis\": \"Enamoramiento entre un animal y una persona\"," +
                         "\"genero\": \"Drama\"," +
                         "\"valoracion\": 3," +
                         "\"alquilado\": false }")
         ).andExpect(status().isOk());
 
-        Movie movie2 = movieRepository.save(new Movie("Paris Texas",
-                "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/oU7Oq2kFAAlGqbU4VoAE36g4hoI.jpg",
-                " Wim Wenders ",
-                1984,
-                "Travis Henderson, un vagabundo sin rumbo que lleva cuatro años desaparecido, sale del desierto" +
-                        " y debe reencontrarse con la sociedad, con él mismo, con su vida y con su familia.",
-                "Drama",
-                5,
-                false));
 
-        mockMvc.perform(put("/movies")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"id\": \"" + movie2.getId() + "\", \"title\": \"Paris Texas\"," +
-                        " \"coverImage\": \"\"https://www.themoviedb.org/t/p/w600_and_h900_bestv2/oU7Oq2kFAAlGqbU4VoAE36g4hoI.jpg\"\"" +
-                        "\"director\": \"\"Win Wenders\"," +
-                        "\"year\": 1984," +
-                        "\"synopsis\":Travis Henderson, un vagabundo sin rumbo que lleva cuatro años desaparecido, sale del desierto" +
-                                " y debe reencontrarse con la sociedad, con él mismo, con su vida y con su familia." +
-                        "\"genero\": \"Drama\"," +
-                        "\"valoracion\": 5," +
-                        "\"alquilado\": false }")
-        ).andExpect(status().isOk());
 
         List<Movie> movies = movieRepository.findAll();
 
-        assertThat(movies, hasSize(2));
-        assertThat(movies.get(0).getTitle(), equalTo("Bella y Bestia"));
+        assertThat(movies, hasSize(1));
+        assertThat(movies.get(0).getTitle(), equalTo("Jurassic Park 2"));
         assertThat(movies.get(0).getCoverImage(), equalTo("https://www.themoviedb.org/t/p/w600_and_h900_bestv2/oU7Oq2kFAAlGqbU4VoAE36g4hoI.jpg"));
-        assertThat(movies.get(0).getDirector(), equalTo("Steven "));
+        assertThat(movies.get(0).getDirector(), equalTo("Steven"));
         assertThat(movies.get(0).getYear(), equalTo(1999));
-        assertThat(movies.get(0).getSynopsis(), equalTo("Enamoramiento entre un animal y una persona,\" "));
+        assertThat(movies.get(0).getSynopsis(), equalTo("Enamoramiento entre un animal y una persona"));
         assertThat(movies.get(0).getGenero(), equalTo("Drama"));
         assertThat(movies.get(0).getValoracion(), equalTo(3));
         assertThat(movies.get(0).isAlquilado(), equalTo(false));
-        assertThat(movies.get(1).getTitle(), equalTo("Paris Texas"));
-        assertThat(movies.get(1).getCoverImage(), equalTo("https://www.themoviedb.org/t/p/w600_and_h900_bestv2/oU7Oq2kFAAlGqbU4VoAE36g4hoI.jpg"));
-        assertThat(movies.get(1).getDirector(), equalTo("Win Wenders "));
-        assertThat(movies.get(1).getYear(), equalTo(1984));
-        assertThat(movies.get(1).getSynopsis(), equalTo("Travis Henderson, un vagabundo sin rumbo que lleva cuatro años desaparecido, sale del desierto\" +\n" +
-                "                                \" y debe reencontrarse con la sociedad, con él mismo, con su vida y con su familia.\"\" "));
-        assertThat(movies.get(1).getGenero(), equalTo("Drama"));
-        assertThat(movies.get(1).getValoracion(), equalTo(5));
-        assertThat(movies.get(1).isAlquilado(), equalTo(false));
-
     }
 
     @Test
