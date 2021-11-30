@@ -88,11 +88,6 @@ class IntegrationTests {
 
 
 
-    @Test
-    void returnsAnErrorIfTryingToGetAMovieThatDoesNotExist() throws Exception {
-        mockMvc.perform(get("/movies/1"))
-                .andExpect(status().isNotFound());
-    }
 
     @Test
     void allowsToDeleteAMovieById() throws Exception {
