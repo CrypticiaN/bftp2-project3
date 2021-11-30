@@ -96,7 +96,7 @@ class IntegrationTests {
                 "A wealthy entrepreneur secretly creates a theme park featuring living dinosaurs drawn from prehistoric DNA.",
                 "Comedia",
                 4,
-                false));
+                false, "Rosa"));
 
         Movie movie2 = movieRepository.save(new Movie("Ratatouille",
                 "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/npHNjldbeTHdKKw28bJKs7lzqzj.jpg",
@@ -104,7 +104,7 @@ class IntegrationTests {
                 "Remy, a resident of Paris, appreciates good food and has quite a sophisticated palate. He would love to become a chef so he can create and enjoy culinary masterpieces to his heart's delight. The only problem is, Remy is a rat.",
                 "Familiar",
                 2,
-                false));
+                false, "Alisa"));
 
         mockMvc.perform(delete("/movies/"+ movie.getId()))
                 .andExpect(status().isOk());
@@ -121,7 +121,8 @@ class IntegrationTests {
                 hasProperty("synopsis", is("A wealthy entrepreneur secretly creates a theme park featuring living dinosaurs drawn from prehistoric DNA")),
                 hasProperty("genero", is("Comedia")),
                 hasProperty("valoracion", is(2)),
-                hasProperty("alquilado", is(false))
+                hasProperty("alquilado", is(false)),
+                hasProperty("customerName", is(null))
         ))));
 
     }
@@ -142,7 +143,7 @@ class IntegrationTests {
                 "A wealthy entrepreneur secretly creates a theme park featuring living dinosaurs drawn from prehistoric DNA.",
                 "Drama",
                 3,
-                false));
+                false, null));
 
         mockMvc.perform(put("/movies")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -153,9 +154,9 @@ class IntegrationTests {
                         "\"synopsis\": \"Enamoramiento entre un animal y una persona\"," +
                         "\"genero\": \"Drama\"," +
                         "\"valoracion\": 3," +
-                        "\"alquilado\": false }")
+                        "\"alquilado\": false, " +
+                        "\"customerName\": null}")
         ).andExpect(status().isOk());
-
 
 
         List<Movie> movies = movieRepository.findAll();
@@ -168,7 +169,8 @@ class IntegrationTests {
         assertThat(movies.get(0).getSynopsis(), equalTo("Enamoramiento entre un animal y una persona"));
         assertThat(movies.get(0).getGenero(), equalTo("Drama"));
         assertThat(movies.get(0).getValoracion(), equalTo(3));
-        assertThat(movies.get(0).isAlquilado(), equalTo(false));
+        assertThat(movies.get(0).isAlquilado(movie.getCustomerName()), equalTo(false));
+        assertThat(movies.get(0).getCustomerName(), equalTo(null));
     }
 
     @Test
@@ -189,15 +191,16 @@ class IntegrationTests {
                         1993,
                         "A wealthy entrepreneur secretly creates a theme park featuring living dinosaurs drawn from prehistoric DNA.",
                         "Comedia",
-                        4, false),
+                        4, false,
+                        null),
                 new Movie("Ratatouille",
                         "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/npHNjldbeTHdKKw28bJKs7lzqzj.jpg",
                         "Brad Bird",
                         2007,
                         "Remy, a resident of Paris, appreciates good food and has quite a sophisticated palate. He would love to become a chef so he can create and enjoy culinary masterpieces to his heart's delight. The only problem is, Remy is a rat.",
                         "Familiar",
-                        2, false)
-        );
+                        2, false,
+                        null));
 
         movieRepository.saveAll(movies);
     }

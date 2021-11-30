@@ -20,6 +20,7 @@ public class MoviesController {
 
     @GetMapping("/movies")
     public List<Movie> allMovies() {
+
         return movieRepository.findAll();
     }
 
@@ -37,12 +38,24 @@ public class MoviesController {
         return movieRepository.save(movie);
     }
 
-
     @DeleteMapping("/movies/{id}")
     public Movie deleteMovieById(@PathVariable Long id) {
         Movie movie = movieRepository.findById(id).orElseThrow(MovieNotFoundException::new);
         movieRepository.deleteById(id);
         return movie;
     }
+
+    @PutMapping("/movies/{id}/return")
+    public Movie noRented(@RequestBody Movie movie){
+        movieRepository.findById(movie.getId()).orElseThrow(MovieNotFoundException::new);
+        return movieRepository.save(movie);
+    }
+    @PutMapping("/movies/{id}/book?customerName={name}")
+    public Movie rented(@RequestBody Movie movie){
+       movieRepository.findById(movie.getId()).orElseThrow(MovieNotFoundException::new);
+        return movieRepository.save(movie);
+    }
+
+
 
 }
