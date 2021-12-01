@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.*;
 
 @RestController
+@CrossOrigin
+
 public class MoviesController {
 
     private final MovieRepository movieRepository;
