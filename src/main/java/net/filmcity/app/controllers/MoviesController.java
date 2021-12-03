@@ -26,7 +26,6 @@ public class MoviesController {
     }
 
 
-
     @PostMapping("/movies")
     public Movie addMovie(@RequestBody Movie movie) {
 
@@ -47,30 +46,22 @@ public class MoviesController {
     }
 
 
-    /**@PutMapping("/movies/${id}/book?customerName=${renter}")
-    public Movie rented(@PathVariable Long id, @RequestParam String customerName){
-        Movie movie =  movieRepository.findById(id).orElseThrow(MovieNotFoundException::new);
-        movie.setAlquilado(true);
-        movie.setCustomerName(customerName);
-        return movieRepository.save(movie);
-    }**/
-
     @PutMapping("/movies/{id}/book")
-    public Movie bookMovie(@PathVariable Long id, @RequestParam String customerName) {
+    public Movie bookMovie(@PathVariable Long id, @RequestParam String renter) {
         Movie movie = movieRepository.findById(id).orElseThrow(MovieNotFoundException::new);
         movie.setAlquilado(true);
-        movie.setCustomerName(customerName);
+        movie.setRenter(renter);
         return movieRepository.save(movie);
     }
 
 
-   /** @PutMapping("/movies/{id}/return")
+    @PutMapping("/movies/{id}/return")
     public Movie bookMovie(@PathVariable Long id) {
         Movie movie = movieRepository.findById(id).orElseThrow(MovieNotFoundException::new);
         movie.setAlquilado(false);
-        movie.setCustomerName(null);
+        movie.setRenter(null);
         return movieRepository.save(movie);
-    }**/
+    }
 
 
 

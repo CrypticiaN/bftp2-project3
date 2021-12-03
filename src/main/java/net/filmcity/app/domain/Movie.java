@@ -19,11 +19,11 @@ public class Movie {
     private String genero;
     private int valoracion;
     private boolean alquilado = false;
-    private String customerName;
+    private String renter;
 
     public Movie() { }
 
-    public Movie(String title, String coverImage, String director, int year, String synopsis, String genero ) {
+    public Movie(String title, String coverImage, String director, int year, String synopsis, String genero) {
         this.title = title;
         this.coverImage = coverImage;
         this.director = director;
@@ -31,8 +31,7 @@ public class Movie {
         this.synopsis = synopsis;
         this.genero = genero;
         this.valoracion = valoracion;
-        this.alquilado = alquilado;
-        this.customerName = customerName;
+
     }
 
     public Long getId() {
@@ -83,12 +82,12 @@ public class Movie {
         this.alquilado = alquilado;
     }
 
-    public String getCustomerName() {
-        return customerName;
+    public String getRenter() {
+        return renter;
     }
 
-    public void setCustomerName(String customerName) {
-        this.customerName = customerName;
+    public void setRenter(String renter) {
+        this.renter = renter;
     }
 
     //Nos creó el método automaticamente duplicando el que ya teníamos
@@ -96,13 +95,13 @@ public class Movie {
         return alquilado;
     }
 
-    public boolean isAlquilado(String customerName) {
+    /**public boolean isAlquilado(String customerName) {
         if(customerName == null){
             return alquilado = false;
         }else{
             return alquilado = true;
         }
-    }
+    }**/
 
 
 
