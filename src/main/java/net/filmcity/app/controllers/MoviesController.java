@@ -46,16 +46,31 @@ public class MoviesController {
         return movie;
     }
 
-    @PutMapping("/movies/{id}/return")
-    public Movie noRented(@RequestBody Movie movie){
-        movieRepository.findById(movie.getId()).orElseThrow(MovieNotFoundException::new);
+
+    /**@PutMapping("/movies/${id}/book?customerName=${renter}")
+    public Movie rented(@PathVariable Long id, @RequestParam String customerName){
+        Movie movie =  movieRepository.findById(id).orElseThrow(MovieNotFoundException::new);
+        movie.setAlquilado(true);
+        movie.setCustomerName(customerName);
+        return movieRepository.save(movie);
+    }**/
+
+    @PutMapping("/movies/{id}/book")
+    public Movie bookMovie(@PathVariable Long id, @RequestParam String customerName) {
+        Movie movie = movieRepository.findById(id).orElseThrow(MovieNotFoundException::new);
+        movie.setAlquilado(true);
+        movie.setCustomerName(customerName);
         return movieRepository.save(movie);
     }
-    @PutMapping("/movies/{id}/book?customerName={name}")
-    public Movie rented(@RequestBody Movie movie){
-       movieRepository.findById(movie.getId()).orElseThrow(MovieNotFoundException::new);
+
+
+   /** @PutMapping("/movies/{id}/return")
+    public Movie bookMovie(@PathVariable Long id) {
+        Movie movie = movieRepository.findById(id).orElseThrow(MovieNotFoundException::new);
+        movie.setAlquilado(false);
+        movie.setCustomerName(null);
         return movieRepository.save(movie);
-    }
+    }**/
 
 
 

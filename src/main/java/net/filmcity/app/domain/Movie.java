@@ -18,12 +18,12 @@ public class Movie {
     private String synopsis;
     private String genero;
     private int valoracion;
-    private boolean alquilado;
+    private boolean alquilado = false;
     private String customerName;
 
     public Movie() { }
 
-    public Movie(String title, String coverImage, String director, int year, String synopsis, String genero, int valoracion, boolean alquilado, String customerName) {
+    public Movie(String title, String coverImage, String director, int year, String synopsis, String genero ) {
         this.title = title;
         this.coverImage = coverImage;
         this.director = director;
